@@ -232,13 +232,13 @@ def m(m):
     bot.send_message(m.chat.id, "<i>The echo supported markdown : ↴</i> \n\n <b>*bold*</b> \n <i>_italick_</i> \n <code>`code` </code> \n hyper: [TEXT](LINK)", parse_mode='HTML')
 
 #################################################################################################################################################################################################
-
+'''
 @bot.message_handler(regexp='^([/!#]id from)(.*)')
 def id_from(m):
     fromm = m.forward_from.m.from_user.id
     bot.send_chat_action(m.chat.id, "typing")
     bot.reply_to(m, "forward info:\n\n ```{}```\n".format(fromm))
-
+'''
 #################################################################################################################################################################################################
 #info
 @bot.message_handler(regexp='^([/!#]info)(.*)')
@@ -268,7 +268,7 @@ def c(m):
 
 #################################################################################################################################################################################################
 
-@bot.message_handler(regexp='^([/!#]cyb3rt)(.*)')
+@bot.message_handler(regexp='^([/!#]TeleUR)(.*)')
 def handler(m):
     cid = m.chat.id
     bot.send_message(cid, "My Name is Cyb3rT \n creator and developer : [developer](https://telegram.me/cliali) \n help channel : [Cyber help](https://telegram.me/cyberhelp)", parse_mode="Markdown")
@@ -279,11 +279,11 @@ def handler(m):
 def test_handler(m):
        cid = m.from_user.id
        fl = m.from_user.first_name
-       bot.send_message(m.chat.id, "*Your Name = {} \n\n  Your ID = {}*".format(fl,cid), parse_mode="Markdown")
+       bot.send_message(m.chat.id, "*Your Name = {} \n Your ID = {}*".format(fl,cid), parse_mode="Markdown")
 
 #################################################################################################################################################################################################
 
-@bot.message_handler(regexp='^([/!#]me1)(.*)')
+@bot.message_handler(regexp='^([/!#]me)(.*)')
 def me(m):
          u = m.from_user.username
          i = m.from_user.id
@@ -293,18 +293,18 @@ def me(m):
 #################################################################################################################################################################################################
 
 #feedback
-@bot.message_handler(commands=['feedback'])
+@bot.message_handler(commands=['c'])
 def feedback(m):
     senderid = m.chat.id
     first = m.from_user.first_name
     usr = m.from_user.username
     str = m.text
-    txt = str.replace('/feedback', '')
+    txt = str.replace('/c', '')
     bot.send_message(senderid, "_Thank Your Msg Posted admin_", parse_mode="Markdown")
     bot.send_message (config.is_sudo, "msg : {}\nid : {}\nname : {}\nUsername : @{}".format(txt,senderid,first,usr))
 
 #################################################################################################################################################################################################
-
+'''
 @bot.message_handler(commands=['j'])
 def j(m):
     config = 242361127
@@ -317,7 +317,7 @@ def j(m):
     txt = m.text.split()[2:]
     text = ' '.join(txt)
     bot.send_message(to_id, "<b>\xD8\xAF\xD8\xB1\x20\xD8\xAC\xD9\x88\xD8\xA7\xD8\xA8\x20\xD8\xB4\xD9\x85\xD8\xA7 :</b>\n <code>{}</code>".format(text), parse_mode="HTML")
-
+'''
 #################################################################################################################################################################################################
 
 @bot.inline_handler(lambda query: len(query.query) is 0)
@@ -389,7 +389,7 @@ def arz(m):
     bot.send_message(m.chat.id, ' دلار : '+dollar+'\n یورو : '+euro+'\n  طلای 18 عیار :  '+gold_per_geram+'\n  پوند : '+pond )        
 
 #################################################################################################################################################################################################
-#ping
+#Ping
 @bot.message_handler(regexp='^([/!#]ping)(.*)')
 def ping(m):
     bot.send_chat_action(m.chat.id, 'typing')
@@ -401,8 +401,9 @@ def ping(m):
 def echo(m):
     bot.send_message(m.chat.id,  m.text.replace('/echo', ''), parse_mode='Markdown')
 
-#################################################################################################################################################################################################
+################################################################################################################################################################################################
 #shortlink
+'''
 @bot.message_handler(regexp='^([/!#]short)(.*)')
 def short(m):
     text = m.text.split(' ',1)[1]
@@ -433,7 +434,7 @@ def send_stats(m):
         ban = str(redis.scard('banlist'))
         text = '*Users : {}\n\nBanlist : {}*'.format(usrs,ban)
         bot.send_message(m.chat.id,text,parse_mode='Markdown')
-
+ '''
 #################################################################################################################################################################################################
 
 #################################################################################################################################################################################################
