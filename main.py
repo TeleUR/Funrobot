@@ -253,7 +253,7 @@ def id(m):      # info menu
     id = m.from_user.id
     text = m.text
     p = m.pinned_message
-    pp = m.pined_message
+    pp = m.pinned_message
     fromm = m.forward_from
     bot.send_chat_action(cid, "typing")
     bot.reply_to(m, "*chat id:* `{}` \n *Chat name :* `{}` \n\n *Your Firstname :* `{}` \n *Your Last Name:* `{}`\n *Your id:* `{}` \n *Your Username :* `@{}`\n\n *Type From :* `{}` \n *Msg data :* `{}`\n *Your Msg :* `{}`\n\n\n *pind msg  : *`{}`\n {} \n\n* from : `{}`*".format(cid,title,f,l,id,usr,t,d,text,p,pp,fromm), parse_mode="Markdown")
