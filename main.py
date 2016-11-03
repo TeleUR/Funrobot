@@ -6,6 +6,7 @@ sys.setdefaultencoding("utf-8")
 import telebot
 from telebot import types
 import json
+import time
 import os
 import redis
 import config
@@ -20,8 +21,6 @@ import urllib2
 
 bot = telebot.TeleBot("250324006:AAFDAxe4nVlgI3nFkUhVBWHf1xTo1bRwwpc")
 config.is_sudo = 242361127
-
-rediss = redis.StrictRedis(host='localhost', port=6379, db=0)
 
 is_sudo = '242361127'
 bot.send_message(is_sudo,"I'm *Online*😃", parse_mode='markdown')
@@ -251,11 +250,13 @@ def id(m):      # info menu
     l = m.from_user.last_name
     t = m.chat.type
     d = m.date
+    id = m.from_user.id
     text = m.text
     p = m.pinned_message
+    pp = m.pined_message
     fromm = m.forward_from
     bot.send_chat_action(cid, "typing")
-    bot.reply_to(m, "*ID from :* ```{}``` \n *Chat name :* ```{}``` \n\n\n *Your Username :* ```@{}``` \n *Your First Name :* ```{}```\n\n *Your Last Name :* ```{}```\n\n *Type From :* ```{}``` \n *Msg data :* ```{}```\n *Your Msg :* ```{}```\n\n *pind msg  : *```{}```\n\n* from : ```{}```*".format(cid,title,usr,f,l,t,d,text,p,fromm), parse_mode="Markdown")
+    bot.reply_to(m, "*chat id:* `{}` \n *Chat name :* `{}` \n\n *Your Firstname :* `{}` \n *Your Last Name:* `{}`\n *Your id:* `{}` \n *Your Username :* `@{}`\n\n *Type From :* `{}` \n *Msg data :* `{}`\n *Your Msg :* `{}`\n\n\n *pind msg  : *`{}`\n {} \n\n* from : `{}`*".format(cid,title,f,l,id,usr,t,d,text,p,pp,fromm), parse_mode="Markdown")
 
 #################################################################################################################################################################################################
 
@@ -282,7 +283,7 @@ def test_handler(m):
 
 #################################################################################################################################################################################################
 
-@bot.message_handler(regexp='^([/!#]me)(.*)')
+@bot.message_handler(regexp='^([/!#]me1)(.*)')
 def me(m):
          u = m.from_user.username
          i = m.from_user.id
@@ -304,12 +305,11 @@ def feedback(m):
 
 #################################################################################################################################################################################################
 
-'''
 @bot.message_handler(commands=['j'])
 def j(m):
-    sudo = config
-    tmt = m.from_user.id
-    idA, cid = m.chat.id, m.chat.id
+    config = 242361127
+    tmt = m.from_user.id 
+    cid = m.chat.id
     if str(tmt) not in config.is_sudo:
         bot.send_message(cid, "Just for admin", parse_mode="Markdown")
         return
@@ -317,7 +317,7 @@ def j(m):
     txt = m.text.split()[2:]
     text = ' '.join(txt)
     bot.send_message(to_id, "<b>\xD8\xAF\xD8\xB1\x20\xD8\xAC\xD9\x88\xD8\xA7\xD8\xA8\x20\xD8\xB4\xD9\x85\xD8\xA7 :</b>\n <code>{}</code>".format(text), parse_mode="HTML")
-'''
+
 #################################################################################################################################################################################################
 
 @bot.inline_handler(lambda query: len(query.query) is 0)
@@ -429,29 +429,12 @@ def m(m):
 @bot.message_handler(commands=['stats'])
 def send_stats(m):
     if m.from_user.id == 242361127:
-        usrs = str(rediss.scard('memberspy'))
-        ban = str(rediss.scard('banlist'))
+        usrs = str(redis.scard('memberspy'))
+        ban = str(redis.scard('banlist'))
         text = '*Users : {}\n\nBanlist : {}*'.format(usrs,ban)
         bot.send_message(m.chat.id,text,parse_mode='Markdown')
 
 #################################################################################################################################################################################################
-
-@bot.message_handler(regexp='^me')
-def answer(m):
-    banlist = rediss.sismember('banlist', '{}'.format(m.from_user.id))
-    if str(banlist) == 'False':
-       try:
-          text = bot.get_chat_member(m.chat.id, m.from_user.id).status
-          id = m.from_user.id
-          rank = rediss.hget("user:rank","{}".format(id))
-          msgs = rediss.get("{}".format(id))
-          name = m.from_user.first_name
-          user = m.from_user.username
-          photo = rediss.hget('stickers',id)
-          bot.send_message(m.chat.id, "*Name* : {} \n*UserName* = @{} \n*GlobalRank* : {} \n*Position In Group* : {} \n\n*Msgs* : {}".format(name,user,rank,text,msgs), parse_mode="Markdown")
-          bot.send_sticker(m.chat.id,photo)
-       except:
-          bot.send_photo(m.chat.id, 'AgADBAADq6cxG3LsuA4NhfzrLPeDz-qCWBkABEgaS8eAZRQfsEkBAAEC',caption="Please Submit One Sticker For Your")
 
 #################################################################################################################################################################################################
 #leave
@@ -464,6 +447,6 @@ def leavehandler(m):
 #################################################################################################################################################################################################
 #################################################################################################################################################################################################
 
-bot.polling(none_stop=True, timeout=9999)
+bot.polling(True)
 #end
 
